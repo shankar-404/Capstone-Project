@@ -1,0 +1,15 @@
+{
+  "version": 2,
+  "dgSpecHash": "5wVDCydWZ4RmQcKqSNS9ixZyFm4Px0FwfByC2PFBmr0JBhGdvTp88C8Luk/4LH0mUurYOF5IQCFsNEP57me/SQ==",
+  "success": true,
+  "projectFilePath": "D:\\SHANKAR\\Work\\Wells Fargo\\Learning\\Capstone Project\\Capstone-Project\\Backend\\Bank-Management-System\\Bank-Management-System\\Bank-Management-System.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\Sheela\\.nuget\\packages\\microsoft.extensions.apidescription.server\\3.0.0\\microsoft.extensions.apidescription.server.3.0.0.nupkg.sha512",
+    "C:\\Users\\Sheela\\.nuget\\packages\\microsoft.openapi\\1.2.3\\microsoft.openapi.1.2.3.nupkg.sha512",
+    "C:\\Users\\Sheela\\.nuget\\packages\\swashbuckle.aspnetcore\\6.2.3\\swashbuckle.aspnetcore.6.2.3.nupkg.sha512",
+    "C:\\Users\\Sheela\\.nuget\\packages\\swashbuckle.aspnetcore.swagger\\6.2.3\\swashbuckle.aspnetcore.swagger.6.2.3.nupkg.sha512",
+    "C:\\Users\\Sheela\\.nuget\\packages\\swashbuckle.aspnetcore.swaggergen\\6.2.3\\swashbuckle.aspnetcore.swaggergen.6.2.3.nupkg.sha512",
+    "C:\\Users\\Sheela\\.nuget\\packages\\swashbuckle.aspnetcore.swaggerui\\6.2.3\\swashbuckle.aspnetcore.swaggerui.6.2.3.nupkg.sha512"
+  ],
+  "logs": []
+}
