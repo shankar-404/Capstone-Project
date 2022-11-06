@@ -1,64 +1,88 @@
-<div class="bg-light vh-100">
-    <div class="container d-flex h-100 align-items-center">
-        <div class="flex-row w-100 align-items-center">
+<div class="bg-light d-flex min-vh-100 h-auto align-items-center">
+    <div class="container py-4">
+        <div class="flex-row">
             <div class="offset-md-2 col-lg-5 col-md-7 offset-lg-4 offset-md-3 bg-dark rounded">
                 <div class="container text-center">
                     <h3 class="pt-3 font-weight-bold text-white">Register</h3>
                 </div>
                 <div class="panel-body p-3">
-                    <form>
-                        <div class="input-group mb-3">
+                    <form [formGroup]="registerForm">
+                        <div class="input-group">
                             <span class="input-group-text" id="basic-addon1">
                                 <i class="fa fa-user"></i>
                             </span>
-                            <input type="text" class="form-control" placeholder="First Name" aria-label="First Name" aria-describedby="basic-addon1">
+                            <input formControlName="firstName" type="text" class="form-control" placeholder="First Name" aria-label="First Name" aria-describedby="basic-addon1">
                         </div>
-                        <div class="input-group mb-3">
+                        <small *ngIf="registerForm.controls['firstName'].dirty && registerForm.hasError('required','firstName')" class="text-danger">
+                            *First name required
+                        </small>
+                        <div class="input-group mt-3">
                             <span class="input-group-text" id="basic-addon1">
                                 <i class="fa fa-user"></i>                                
                             </span>
-                            <input type="text" class="form-control" placeholder="Last Name" aria-label="Last Name" aria-describedby="basic-addon1">
+                            <input formControlName="middleName" type="text" class="form-control" placeholder="Middle Name" aria-label="Middle Name" aria-describedby="basic-addon1">
                         </div>
-                        <div class="input-group mb-3">
+                        <small *ngIf="registerForm.controls['middleName'].dirty && registerForm.hasError('required','middleName')" class="text-danger">
+                            *Middle name required
+                        </small>
+                        <div class="input-group mt-3">
                             <span class="input-group-text" id="basic-addon1">
                                 <i class="fa fa-user"></i>                                
                             </span>
-                            <input type="text" class="form-control" placeholder="Middle Name" aria-label="Middle Name" aria-describedby="basic-addon1">
+                            <input formControlName="lastName" type="text" class="form-control" placeholder="Last Name" aria-label="Last Name" aria-describedby="basic-addon1">
                         </div>
-                        <div class="input-group mb-3">
+                        <small *ngIf="registerForm.controls['lastName'].dirty && registerForm.hasError('required','lastName')" class="text-danger">
+                            *Last name required
+                        </small>
+                        <div class="input-group mt-3">
                             <span class="input-group-text" id="basic-addon1">
                                 <i class="fa fa-map-marker"></i>                                
                             </span>
-                            <input type="text" class="form-control" placeholder="City" aria-label="City" aria-describedby="basic-addon1">
+                            <input formControlName="city" type="text" class="form-control" placeholder="City" aria-label="City" aria-describedby="basic-addon1">
                         </div>
-                        <div class="input-group mb-3">
+                        <small *ngIf="registerForm.controls['city'].dirty && registerForm.hasError('required','city')" class="text-danger">
+                            *City required
+                        </small>
+                        <div class="input-group mt-3">
                             <span class="input-group-text" id="basic-addon1">
                                 <i class="fa fa-address-book"></i>                                
                             </span>
-                            <input type="text" class="form-control" placeholder="Contact Number" aria-label="Contact Number" aria-describedby="basic-addon1">
+                            <input formControlName="contact" type="text" class="form-control" placeholder="Contact Number" aria-label="Contact Number" aria-describedby="basic-addon1">
                         </div>
-                        <div class="input-group mb-3">
+                        <small *ngIf="registerForm.controls['contact'].dirty && registerForm.hasError('required','contact')" class="text-danger">
+                            *Contact required
+                        </small>
+                        <div class="input-group mt-3">
                             <span class="input-group-text" id="basic-addon1">
                                 <i class="fa fa-briefcase"></i>                                
                             </span>
-                            <input type="text" class="form-control" placeholder="Occupation" aria-label="Occupation" aria-describedby="basic-addon1">
+                            <input formControlName="occupation" type="text" class="form-control" placeholder="Occupation" aria-label="Occupation" aria-describedby="basic-addon1">
                         </div>
-                        <div class="input-group mb-3">
+                        <small *ngIf="registerForm.controls['occupation'].dirty && registerForm.hasError('required','occupation')" class="text-danger">
+                            *Occupation required
+                        </small>
+                        <div class="input-group mt-3">
                             <span class="input-group-text" id="basic-addon1">
                                 <i class="fa fa-calendar"></i>                                
                             </span>
-                            <input type="text" class="form-control" placeholder="DOB" aria-label="DOB" aria-describedby="basic-addon1">
+                            <input formControlName="dob" type="text" class="form-control" placeholder="DOB" aria-label="DOB" aria-describedby="basic-addon1">
                         </div>
-                        <div class="input-group mb-3">
+                        <small *ngIf="registerForm.controls['dob'].dirty && registerForm.hasError('required','dob')" class="text-danger">
+                            *DOB required
+                        </small>
+                        <div class="input-group mt-3">
                             <span class="input-group-text" id="basic-addon1">
                                 <i class="fa fa-lock"></i>                                
                             </span>
-                            <input [type]="passwordInputType" class="form-control" placeholder="Password" aria-label="Customer ID" aria-describedby="basic-addon1">
+                            <input formControlName="password" [type]="passwordInputType" class="form-control" placeholder="Password" aria-label="Customer ID" aria-describedby="basic-addon1">
                             <span (click)="hideShowPassword()" class="input-group-text" id="basic-addon1">
                                 <i class="fa {{passwordIcon}}"></i>
                             </span>
                         </div>
-                        <button type="submit" class="btn btn-primary mt-3 w-100">Register</button>
+                        <small *ngIf="registerForm.controls['password'].dirty && registerForm.hasError('required','password')" class="text-danger">
+                            *Password required
+                        </small>
+                        <button (click)="onSubmit()" type="submit" class="btn btn-primary mt-3 w-100">Register</button>
                         <div class="text-center pt-4 text-muted">Already registered? <a routerLink="/login">Login</a></div>
                     </form>
                 </div>
