@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import ValidateForm from 'src/app/helpers/validateForm';
 import { ToastrService } from 'ngx-toastr';
+import { AuthService } from 'src/app/services/auth.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-login',
@@ -15,7 +17,7 @@ export class LoginComponent implements OnInit {
   passwordIcon: string = "fa-eye-slash";
   loginForm!: FormGroup;
 
-  constructor(private fb: FormBuilder, private toastr: ToastrService) { }
+  constructor(private fb: FormBuilder, private toastr: ToastrService, private auth: AuthService, private router: Router) { }
 
   ngOnInit(): void {
     this.loginForm = this.fb.group({
@@ -33,7 +35,18 @@ export class LoginComponent implements OnInit {
   onSubmit(){
     if(this.loginForm.valid){
       //API Request
-      
+      // console.log(this.loginForm.value)
+      this.auth.login(this.loginForm.value)
+      .subscribe({
+        next:(res)=>{
+          console.log(res.message);
+          this.loginForm.reset();
+          this.router.navigate(['menu']); 
+        },
+        error:(err)=>{
+          console.log(err.message);
+        }
+      })
     }
     else{
       this.toastr.error("Invalid Form","Error");

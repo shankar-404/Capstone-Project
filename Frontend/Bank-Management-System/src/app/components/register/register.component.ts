@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import ValidateForm from 'src/app/helpers/validateForm';
+import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
   selector: 'app-register',
@@ -15,7 +17,7 @@ export class RegisterComponent implements OnInit {
   passwordIcon: string = "fa-eye-slash";
   registerForm!: FormGroup;
 
-  constructor(private fb: FormBuilder, private toastr: ToastrService) { }
+  constructor(private fb: FormBuilder, private toastr: ToastrService, private auth: AuthService, private router: Router ) { }
 
   ngOnInit(): void {
     this.registerForm = this.fb.group({
@@ -39,7 +41,18 @@ export class RegisterComponent implements OnInit {
   onSubmit(){
     if(this.registerForm.valid){
       //API Request
-      console.log(this.registerForm.value)
+      // console.log(this.registerForm.value)
+      this.auth.login(this.registerForm.value)
+      .subscribe({
+        next:(res)=>{
+          console.log(res.message);
+          this.registerForm.reset();
+          this.router.navigate(['login']);
+        },
+        error:(err)=>{
+          console.log(err.message);
+        }
+      })
     }
     else{
       ValidateForm.validateFormFields(this.registerForm);
