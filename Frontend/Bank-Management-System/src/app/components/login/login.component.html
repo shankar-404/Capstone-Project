@@ -1,0 +1,37 @@
+<div class="bg-secondary d-flex min-vh-100 h-auto align-items-center">
+    <div class="container py-4">
+        <div class="flex-row">
+            <div class="offset-md-2 col-lg-5 col-md-7 offset-lg-4 offset-md-3 bg-dark rounded">
+                <div class="container text-center">
+                    <h3 class="pt-3 font-weight-bold text-white">Login</h3>
+                </div>
+                <div class="panel-body p-3">
+                    <form [formGroup]="loginForm">
+                        <div class="input-group">
+                            <span class="input-group-text" id="basic-addon1">
+                                <i class="fa fa-user"></i>
+                            </span>
+                            <input formControlName="customerId" type="text" class="form-control" placeholder="Customer ID" aria-label="Customer ID" aria-describedby="basic-addon1">
+                        </div>
+                        <small *ngIf="loginForm.controls['customerId'].dirty && loginForm.hasError('required','customerId')" class="text-danger">
+                            *Customer ID required
+                        </small>
+                        <div class="input-group mt-3">
+                            <span class="input-group-text" id="basic-addon1">
+                                <i class="fa fa-lock"></i>                                
+                            </span>
+                            <input formControlName="password" [type]="passwordInputType" class="form-control" placeholder="Password" aria-label="Customer ID" aria-describedby="basic-addon1">
+                            <button (click)="hideShowPassword()" class="btn btn-light">
+                                <i class="fa {{passwordIcon}}"></i>
+                            </button>
+                        </div>
+                        <small *ngIf="loginForm.controls['password'].dirty && loginForm.hasError('required','password')" class="text-danger">
+                            *Password required
+                        </small>
+                        <button (click)="onSubmit()" type="submit" class="btn btn-primary mt-4 w-100">Login</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
