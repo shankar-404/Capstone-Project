@@ -45,6 +45,7 @@ export class LoginComponent implements OnInit {
         },
         error:(err)=>{
           console.log(err.message);
+          this.router.navigate(['register'])
         }
       })
     }
