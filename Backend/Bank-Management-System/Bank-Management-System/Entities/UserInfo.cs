@@ -1,5 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Bank_Management_System.Entities
@@ -9,8 +8,10 @@ namespace Bank_Management_System.Entities
     {
         [Key]
         public int Id { get; set; }
-        [Required]
-        public string? UserId { get; set; }
+        [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
+        public string CustomerId { get; set;}
+        [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
+        public Guid Token { get; set; }
         [Required]
         public string? FirstName { get; set; }
         public string? MiddleName { get; set; }

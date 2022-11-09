@@ -18,8 +18,15 @@ namespace Bank_Management_System.Controllers
         [HttpPost]
         public ActionResult Post([FromBody] LoginInfo loginInfo)
         {
-            int statusCode = loginService.Login(loginInfo);
-            return StatusCode(statusCode, statusCode);
+            try
+            {
+                LoginResponse statusCode = loginService.Login(loginInfo);
+                return StatusCode(200, statusCode);
+            }
+            catch (Exception ex) {
+                return StatusCode(500, ex.Message);
+            }
+            
                 
         }
 

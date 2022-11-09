@@ -4,6 +4,7 @@ using Bank_Management_System.Database;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BankManagementSystem.Migrations
 {
     [DbContext(typeof(UserInfoDbContext))]
-    partial class UserInfoDbContextModelSnapshot : ModelSnapshot
+    [Migration("20221109153848_db-3")]
+    partial class db3
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -64,9 +67,8 @@ namespace BankManagementSystem.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<Guid>("Token")
-                        .ValueGeneratedOnAddOrUpdate()
-                        .HasColumnType("uniqueidentifier")
-                        .HasDefaultValueSql("(newid())");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
 

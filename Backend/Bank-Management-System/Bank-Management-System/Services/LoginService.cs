@@ -1,5 +1,6 @@
 ﻿using Bank_Management_System.Entities;
 using Bank_Management_System.Interfaces;
+using System.Reflection.Metadata.Ecma335;
 
 namespace Bank_Management_System.Services
 {
@@ -12,16 +13,16 @@ namespace Bank_Management_System.Services
             registerService = new RegisterService();
         }
 
-        public int Login(LoginInfo loginInfo)
+        public LoginResponse Login(LoginInfo loginInfo)
         {
-            string userId = loginInfo.UserId;
+            string customerId = loginInfo.CustomerId;
             string password = loginInfo.Password;
-            UserInfo? user = registerService.GetUser(userId);
+            UserInfo? user = registerService.GetUser(customerId);
             if (user == null)
-                return 404;
+                return new LoginResponse { status = 404, customerId=null, Token=null };
             if (password != user.Password)
-                return 401;
-            return 200;
+                return new LoginResponse { status = 401, customerId = null, Token = null };
+            return new LoginResponse { status = 200, customerId = user.CustomerId, Token = user.Token.ToString() };
         }
     }
 }
