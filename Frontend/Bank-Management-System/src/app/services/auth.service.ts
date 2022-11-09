@@ -15,5 +15,11 @@ export class AuthService {
 
   login(loginObj:any) {
     return this.http.post<any>(`${this.baseUrl}/login`,loginObj)
+
+    //
+  }
+
+  isLoggedIn(){
+    return !!localStorage.getItem('token')
   }
 }

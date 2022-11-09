@@ -40,6 +40,7 @@ export class LoginComponent implements OnInit {
       .subscribe({
         next:(res)=>{
           console.log(res.message);
+          localStorage.setItem('token', 'BOOMER');
           this.loginForm.reset();
           this.router.navigate(['menu']); 
         },
