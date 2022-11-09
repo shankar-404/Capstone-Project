@@ -47,9 +47,9 @@
                             <span class="input-group-text" id="basic-addon1">
                                 <i class="fa fa-address-book"></i>                                
                             </span>
-                            <input formControlName="contact" type="text" class="form-control" placeholder="Contact Number" aria-label="Contact Number" aria-describedby="basic-addon1">
+                            <input formControlName="contactNumber" type="text" class="form-control" placeholder="Contact Number" aria-label="Contact Number" aria-describedby="basic-addon1">
                         </div>
-                        <small *ngIf="registerForm.controls['contact'].dirty && registerForm.hasError('required','contact')" class="text-danger">
+                        <small *ngIf="registerForm.controls['contactNumber'].dirty && registerForm.hasError('required','contactNumber')" class="text-danger">
                             *Contact required
                         </small>
                         <div class="input-group mt-3">

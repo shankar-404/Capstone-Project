@@ -20,6 +20,7 @@ export class LoginComponent implements OnInit {
   constructor(private fb: FormBuilder, private toastr: ToastrService, private auth: AuthService, private router: Router) { }
 
   ngOnInit(): void {
+    localStorage.clear();
     this.loginForm = this.fb.group({
       customerId: ['',Validators.required],
       password: ['',Validators.required]
@@ -39,13 +40,15 @@ export class LoginComponent implements OnInit {
       this.auth.login(this.loginForm.value)
       .subscribe({
         next:(res)=>{
-          console.log(res.message);
-          localStorage.setItem('token', 'BOOMER');
+          console.log(res.token)
+          this.toastr.success("Logged In","Success");
+          localStorage.setItem('token', res.token);
+          localStorage.setItem('customerID', res.customerId);
           this.loginForm.reset();
-          this.router.navigate(['menu']); 
+          this.router.navigate(['user/menu']); 
         },
         error:(err)=>{
-          console.log(err.message);
+          this.toastr.success("Wrong Credentials","Error");
           this.router.navigate(['register'])
         }
       })
