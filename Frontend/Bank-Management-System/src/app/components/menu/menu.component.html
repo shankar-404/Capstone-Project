@@ -1,5 +1,5 @@
 <div class="d-flex bg-secondary min-vh-100 h-auto align-items-center justify-content-center">
-	<ul class="nav flex-column rounded w-50">
+	<ul class="nav flex-column rounded w-50 align-items-center justify-content-center">
 		<li class="w-100 nav-item rounded-top ">
 			<button [routerLink]="['/user/loan']" class="w-100 btn btn-dark rounded-top py-2">Loan</button>
 		  </li>
@@ -8,6 +8,9 @@
 		  </li>
 		  <li class="w-100 nav-item rounded-bottom mt-2">
 			<button [routerLink]="['/user/view']" class="w-100 btn btn-dark text-center rounded-bottom py-2">View</button>
+		  </li>
+		  <li class="w-25 nav-item rounded-bottom mt-4">
+			<button [routerLink]="['/login']" class="w-100 btn btn-danger text-center rounded-bottom py-2">Logout</button>
 		  </li>
 	</ul>
 </div>

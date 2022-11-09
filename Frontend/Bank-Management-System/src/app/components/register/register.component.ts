@@ -18,15 +18,17 @@ export class RegisterComponent implements OnInit {
   passwordIcon: string = "fa-eye-slash";
   registerForm!: FormGroup;
 
-  constructor(private fb: FormBuilder, private toastr: ToastrService, private auth: AuthService, private router: Router ) { }
+  constructor(private fb: FormBuilder, private toastr: ToastrService, private auth: AuthService, private router: Router) { }
 
   ngOnInit(): void {
+    localStorage.clear();
     this.registerForm = this.fb.group({
+      customerId:[''],
       firstName: ['', Validators.required],
       middleName: ['', Validators.required],
       lastName: ['', Validators.required],
       city: ['', Validators.required],
-      contact: ['', Validators.required],
+      contactNumber: ['', Validators.required],
       occupation: ['', Validators.required],
       dob: ['', Validators.required],
       password: ['', Validators.required]
@@ -42,16 +44,20 @@ export class RegisterComponent implements OnInit {
   onSubmit(){
     if(this.registerForm.valid){
       //API Request
-      // console.log(this.registerForm.value)
-      this.auth.login(this.registerForm.value)
+      // console.log(this.registerForm.value['dob'])
+      let date_str = this.registerForm.value['dob'].year + '-' + this.registerForm.value['dob'].month + '-' + this.registerForm.value['dob'].day
+      this.registerForm.value['dob'] = date_str;
+      // console.log(this.registerForm.value )
+      this.auth.register(this.registerForm.value)
       .subscribe({
         next:(res)=>{
-          console.log(res.message);
+          this.toastr.success(res,"Success");
+          // console.log(res);
           this.registerForm.reset();
           this.router.navigate(['login']);
         },
         error:(err)=>{
-          console.log(err.message);
+          this.toastr.error("Already registered","Error");
         }
       })
     }

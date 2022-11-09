@@ -12,10 +12,12 @@ import ValidateForm from 'src/app/helpers/validateForm';
 export class LoanComponent implements OnInit {
 
   loanForm!: FormGroup;
+  customerId!:string;
 
   constructor(private fb: FormBuilder, private toastr: ToastrService, private router: Router) { }
 
   ngOnInit(): void {
+    this.customerId = localStorage.getItem('customerId') || ""
     this.loanForm = this.fb.group({
       branch: ['',Validators.required],
       amount: ['',Validators.required]

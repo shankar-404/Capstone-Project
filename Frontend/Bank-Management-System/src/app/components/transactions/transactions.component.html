@@ -11,7 +11,7 @@
                             <span class="input-group-text" id="basic-addon1">
                                 Customer ID
                             </span>
-                            <input type="text" class="form-control" value="Customer ID" disabled>
+                            <input type="text" class="form-control" value="{{customerId}}" disabled>
                         </div>
                         <!-- <div class="input-group mt-3">
                             <label class="input-group-text" for="transactionType">Transaction Type</label>
@@ -41,6 +41,7 @@
                             Submit
                         </button>
                     </form>
+                    <button [routerLink]="['/login']" class="w-100 btn btn-danger text-center rounded-bottom py-2 mt-5">Logout</button>
                 </div>
             </div>
         </div>

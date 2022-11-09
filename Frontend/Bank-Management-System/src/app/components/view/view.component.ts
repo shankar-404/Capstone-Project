@@ -15,10 +15,12 @@ export class ViewComponent implements OnInit {
   startDateModel!: NgbDateStruct;
   endDateModel!: NgbDateStruct;
   viewForm!: FormGroup;
-
+  customerId!:string;
+  
   constructor(private fb: FormBuilder, private toastr: ToastrService, private router: Router) { }
 
   ngOnInit(): void {
+    this.customerId = localStorage.getItem('customerId') || ""
     this.viewForm = this.fb.group({
       transactionType: ['',Validators.required],
       startDate: ['',Validators.required],

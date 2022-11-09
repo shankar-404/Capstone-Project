@@ -20,6 +20,7 @@ export class LoginComponent implements OnInit {
   constructor(private fb: FormBuilder, private toastr: ToastrService, private auth: AuthService, private router: Router) { }
 
   ngOnInit(): void {
+    localStorage.clear();
     this.loginForm = this.fb.group({
       customerId: ['',Validators.required],
       password: ['',Validators.required]
@@ -32,6 +33,15 @@ export class LoginComponent implements OnInit {
     this.passwordIsText ? this.passwordInputType = "text" : this.passwordInputType = "password";
   }
 
+  setLocalStorage(res:any){
+    if(res.token && res.token != null){
+      localStorage.setItem('token', res.token);
+    }
+    if(res.customerId && res.customerId != null){
+      localStorage.setItem('customerId', res.customerId);
+    }
+  }
+
   onSubmit(){
     if(this.loginForm.valid){
       //API Request
@@ -39,14 +49,22 @@ export class LoginComponent implements OnInit {
       this.auth.login(this.loginForm.value)
       .subscribe({
         next:(res)=>{
-          console.log(res.message);
-          localStorage.setItem('token', 'BOOMER');
+          if(res.status == 200){
+          // console.log(res.token)
+          // console.log(res)
+          this.toastr.success("Logged In","Success");
+          this.setLocalStorage(res)
           this.loginForm.reset();
-          this.router.navigate(['menu']); 
+          this.router.navigate(['user/menu']); 
+          }
+          else{
+            this.toastr.error("User does not exist","Error");
+          this.router.navigate(['register'])
+          }
+          
         },
         error:(err)=>{
-          console.log(err.message);
-          this.router.navigate(['register'])
+          this.toastr.success("Connection to backend failed","Error");
         }
       })
     }

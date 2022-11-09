@@ -7,7 +7,11 @@ namespace Bank_Management_System.Database
 {
     public class UserInfoDbContext:DbContext
     {
-        private const string ConnectionString = @"Server=.\SQLEXPRESS;Database=BankDb;Trusted_Connection=True;trustServerCertificate=true;";
+        //Monish-ConnectionString
+        //private const string ConnectionString = @"Server=.\SQLEXPRESS;Database=BankDb;Trusted_Connection=True;trustServerCertificate=true;";
+
+        //Shankar-ConnectionString
+        private const string ConnectionString = @"server=DESKTOP-TSPSRDD;database=BankDb;Trusted_Connection=true;trustServerCertificate=true;";
 
         public DbSet<UserInfo> UsersList { get; set; }
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder) {
