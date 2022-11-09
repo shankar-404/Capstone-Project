@@ -19,7 +19,7 @@ namespace Bank_Management_System.Services
 
         public UserInfo GetUser(string userId)
         {
-            return context.UsersList.SingleOrDefault(user => user.UserId == userId);
+            return context.UsersList.SingleOrDefault(user => user.CustomerId == userId);
         }
 
         public void RegisterUser(UserInfo userInfo)

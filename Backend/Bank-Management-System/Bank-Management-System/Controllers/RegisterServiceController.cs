@@ -48,7 +48,7 @@ namespace Bank_Management_System.Controllers
             }
             catch (Exception ex)
             {
-                return StatusCode(500, ex.Message);
+                return StatusCode(500, ex.InnerException.Message);
             }
         }
 
@@ -59,12 +59,12 @@ namespace Bank_Management_System.Controllers
         //}
 
         // DELETE api/<RegisterServiceController>/5
-        [HttpDelete("Unregister/{userId}")]
-        public ActionResult UnRegister(string userId)
+        [HttpDelete("Unregister/{customerId}")]
+        public ActionResult UnRegister(string customerId)
         {
             try
             {
-                registerService.UnregisterUser(userId);
+                registerService.UnregisterUser(customerId);
                 return StatusCode(200, "UnRegistered User !");
             }
             catch (Exception ex)
