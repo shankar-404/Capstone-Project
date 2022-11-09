@@ -1,0 +1,25 @@
+<div class="modal-header bg-dark text-white">
+    <h4 class="modal-title">Choose Transaction Type</h4>
+    <button type="button" class="btn-close bg-danger" aria-label="Close" (click)="activeModal.dismiss('Cross click')"></button>
+</div>
+
+<div class="modal-body bg-dark text-white">
+    <form [formGroup]="transactionTypeForm">
+    <div class="input-group mt-3">
+        <label class="input-group-text" for="transactionType">Transaction Type</label>
+        <select formControlName="transactionType" class="form-select" id="transactionType">
+            <option selected disabled>Choose...</option>
+            <option value="Withdraw">Withdraw</option>
+            <option value="Deposit">Deposit</option>
+        </select>
+    </div>
+    <small *ngIf="transactionTypeForm.controls['transactionType'].dirty && transactionTypeForm.hasError('required','transactionType')" class="text-danger">
+        *Transaction type required
+    </small>
+</form>
+</div>
+
+<div class="modal-footer bg-dark text-white">
+    <button type="button" class="btn btn-primary" (click)="onSave()" type="submit">Save</button>
+    <button type="button" class="btn btn-danger" (click)="activeModal.dismiss('Cross click')">Close</button>
+</div>
