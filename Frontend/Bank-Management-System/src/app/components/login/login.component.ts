@@ -43,7 +43,7 @@ export class LoginComponent implements OnInit {
           console.log(res.token)
           this.toastr.success("Logged In","Success");
           localStorage.setItem('token', res.token);
-          localStorage.setItem('customerID', res.customerId);
+          localStorage.setItem('customerId', res.customerId);
           this.loginForm.reset();
           this.router.navigate(['user/menu']); 
         },

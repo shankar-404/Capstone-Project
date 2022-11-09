@@ -15,10 +15,12 @@ export class TransactionsComponent implements OnInit {
 
   transactionForm!: FormGroup;
   transactionTypeValue!: string;
+  customerId!:string;
 
   constructor(private fb: FormBuilder, private toastr: ToastrService, private router: Router, private modalService: NgbModal) { }
 
   ngOnInit(): void {
+    this.customerId = localStorage.getItem('customerId') || ""
     this.transactionForm = this.fb.group({
       transactionType: ['',Validators.required],
       amount: ['',Validators.required]
