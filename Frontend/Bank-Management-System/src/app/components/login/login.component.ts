@@ -33,6 +33,15 @@ export class LoginComponent implements OnInit {
     this.passwordIsText ? this.passwordInputType = "text" : this.passwordInputType = "password";
   }
 
+  setLocalStorage(res:any){
+    if(res.token && res.token != null){
+      localStorage.setItem('token', res.token);
+    }
+    if(res.customerId && res.customerId != null){
+      localStorage.setItem('customerId', res.customerId);
+    }
+  }
+
   onSubmit(){
     if(this.loginForm.valid){
       //API Request
@@ -40,16 +49,22 @@ export class LoginComponent implements OnInit {
       this.auth.login(this.loginForm.value)
       .subscribe({
         next:(res)=>{
-          console.log(res.token)
+          if(res.status == 200){
+          // console.log(res.token)
+          // console.log(res)
           this.toastr.success("Logged In","Success");
-          localStorage.setItem('token', res.token);
-          localStorage.setItem('customerId', res.customerId);
+          this.setLocalStorage(res)
           this.loginForm.reset();
           this.router.navigate(['user/menu']); 
+          }
+          else{
+            this.toastr.error("User does not exist","Error");
+          this.router.navigate(['register'])
+          }
+          
         },
         error:(err)=>{
-          this.toastr.success("Wrong Credentials","Error");
-          this.router.navigate(['register'])
+          this.toastr.success("Connection to backend failed","Error");
         }
       })
     }
