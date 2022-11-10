@@ -23,6 +23,8 @@ namespace Bank_Management_System.Entities
         public string? DOB { get; set; }
         [Required]
         public string Password { get; set; }
+        [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
+        public double Balance { get; set; }
 
 
     }

@@ -1,115 +1,115 @@
-using Bank_Management_System.Database;
-using Bank_Management_System.Entities;
-using Bank_Management_System.Constants;
-using Bank_Management_System.Interfaces;
-using System.Reflection.Metadata.Ecma335;
+//using bank_management_system.database;
+//using bank_management_system.entities;
+//using bank_management_system.constants;
+//using bank_management_system.interfaces;
+//using system.reflection.metadata.ecma335;
 
-namespace Bank_Management_System.Services
-{
-    public class TransactionService : ITransactionService
-    {
-        private UserInfoDbContext context;
+//namespace bank_management_system.services
+//{
+//    public class transactionservice : itransactionservice
+//    {
+//        private userinfodbcontext context;
 
-        public TransactionService ()
-        {
-            context = new UserInfoDbContext();
-        }
+//        public transactionservice()
+//        {
+//            context = new userinfodbcontext();
+//        }
 
-        private Account getAccountFromUserId(int id)
-        {
-            var account = context.AccounList.Where(a => a.UserInfoId == id).FirstOrDefault();
-            if (account == null)
-            {
-                account = new Account { Balance = 0, UserInfoId = id };
-                context.AccounList.Add(account);
-                context.SaveChanges();
-            }
+//        private account getaccountfromuserid(int id)
+//        {
+//            var account = context.accounlist.where(a => a.userinfoid == id).firstordefault();
+//            if (account == null)
+//            {
+//                account = new account { balance = 0, userinfoid = id };
+//                context.accounlist.add(account);
+//                context.savechanges();
+//            }
 
-            return account;
-        }
+//            return account;
+//        }
 
-        public bool validateTransaction(TransactionRequest t)
-        {
-            var account = getAccountFromUserId(t.UserId);
+//        public bool validatetransaction(transactionrequest t)
+//        {
+//            var account = getaccountfromuserid(t.userid);
 
-            if (t.Type == Constants.Constants.WITHDRAW)
-            {
-                if (t.Amount > account.Balance)
-                {
-                    return false;
-                }
-            }
-                
-            return true;
-        }
+//            if (t.type == constants.constants.withdraw)
+//            {
+//                if (t.amount > account.balance)
+//                {
+//                    return false;
+//                }
+//            }
 
-        public TransactionResponse Withdraw(TransactionRequest t)
-        {
-            var account = getAccountFromUserId(t.UserId);
+//            return true;
+//        }
 
-            if (validateTransaction(t))
-            {
-                account.Balance -= t.Amount ?? 0.0;
-                context.AccounList.Update(account);
-                context.SaveChanges();
+//        public transactionresponse withdraw(transactionrequest t)
+//        {
+//            var account = getaccountfromuserid(t.userid);
 
-                return new TransactionResponse
-                {
-                    AccountId = account.Id,
-                    UserId = account.UserInfoId,
-                    Status = true,
-                    Balance = account.Balance
-                };
-            }
+//            if (validatetransaction(t))
+//            {
+//                account.balance -= t.amount ?? 0.0;
+//                context.accounlist.update(account);
+//                context.savechanges();
 
-            return new TransactionResponse
-            {
-                AccountId = account.Id,
-                UserId = account.UserInfoId,
-                Status = false,
-                Balance = account.Balance
-            };
-        }
+//                return new transactionresponse
+//                {
+//                    accountid = account.id,
+//                    userid = account.userinfoid,
+//                    status = true,
+//                    balance = account.balance
+//                };
+//            }
 
-        public TransactionResponse Deposit(TransactionRequest t)
-        {
-            var account = getAccountFromUserId(t.UserId);
+//            return new transactionresponse
+//            {
+//                accountid = account.id,
+//                userid = account.userinfoid,
+//                status = false,
+//                balance = account.balance
+//            };
+//        }
 
-            if (validateTransaction(t))
-            {
-                account.Balance += t.Amount ?? 0.0;
-                context.AccounList.Update(account);
-                context.SaveChanges();
+//        public transactionresponse deposit(transactionrequest t)
+//        {
+//            var account = getaccountfromuserid(t.userid);
 
-                return new TransactionResponse
-                {
-                    AccountId = account.Id,
-                    UserId = account.UserInfoId,
-                    Status = true,
-                    Balance = account.Balance
-                };
-            }
+//            if (validatetransaction(t))
+//            {
+//                account.balance += t.amount ?? 0.0;
+//                context.accounlist.update(account);
+//                context.savechanges();
 
-            return new TransactionResponse
-            {
-                AccountId = account.Id,
-                UserId = account.UserInfoId,
-                Status = false,
-                Balance = account.Balance
-            };
-        }
+//                return new transactionresponse
+//                {
+//                    accountid = account.id,
+//                    userid = account.userinfoid,
+//                    status = true,
+//                    balance = account.balance
+//                };
+//            }
 
-        public TransactionResponse Balance(int id)
-        {
-            var account = getAccountFromUserId(id);
+//            return new transactionresponse
+//            {
+//                accountid = account.id,
+//                userid = account.userinfoid,
+//                status = false,
+//                balance = account.balance
+//            };
+//        }
 
-            return new TransactionResponse
-            {
-                AccountId = account.Id,
-                UserId = account.UserInfoId,
-                Status = true,
-                Balance = account.Balance
-            };
-        }
-    }
-}
+//        public transactionresponse balance(int id)
+//        {
+//            var account = getaccountfromuserid(id);
+
+//            return new transactionresponse
+//            {
+//                accountid = account.id,
+//                userid = account.userinfoid,
+//                status = true,
+//                balance = account.balance
+//            };
+//        }
+//    }
+//}

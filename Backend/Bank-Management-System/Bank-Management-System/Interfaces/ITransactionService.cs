@@ -6,6 +6,6 @@ namespace Bank_Management_System.Interfaces
     {
         TransactionResponse Withdraw(TransactionRequest t);
         TransactionResponse Deposit(TransactionRequest t);
-        TransactionResponse Balance(int id);
+        TransactionResponse Balance(string customerId);
     }
 }

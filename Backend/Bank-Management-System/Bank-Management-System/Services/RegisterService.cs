@@ -22,10 +22,12 @@ namespace Bank_Management_System.Services
             return context.UsersList.SingleOrDefault(user => user.CustomerId == userId);
         }
 
-        public void RegisterUser(UserInfo userInfo)
+        public RegisterResponse RegisterUser(UserInfo userInfo)
         {
             context.UsersList.Add(userInfo);
             context.SaveChanges();
+            string cutomerId = context.UsersList.OrderByDescending(p => p.Id).FirstOrDefault().CustomerId;
+            return new RegisterResponse { CustomerId=cutomerId};
         }
 
         public void UnregisterUser(string userId)

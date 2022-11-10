@@ -43,8 +43,8 @@ namespace Bank_Management_System.Controllers
         {
             try
             {
-                registerService.RegisterUser(userInfo);
-                return StatusCode(200, "User Registered !");
+                RegisterResponse registerResponse = registerService.RegisterUser(userInfo);
+                return StatusCode(200, registerResponse);
             }
             catch (Exception ex)
             {
