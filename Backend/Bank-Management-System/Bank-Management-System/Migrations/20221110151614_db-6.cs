@@ -5,7 +5,7 @@
 namespace BankManagementSystem.Migrations
 {
     /// <inheritdoc />
-    public partial class db5 : Migration
+    public partial class db6 : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)

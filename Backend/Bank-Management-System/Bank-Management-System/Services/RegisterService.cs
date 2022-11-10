@@ -7,6 +7,7 @@ namespace Bank_Management_System.Services
 {
     public class RegisterService : IRegisterService
     {
+        public const double OPENING_BALANCE = 0.0;
         private UserInfoDbContext context; 
         public RegisterService() {
             context = new UserInfoDbContext();
@@ -22,15 +23,33 @@ namespace Bank_Management_System.Services
             return context.UsersList.SingleOrDefault(user => user.CustomerId == userId);
         }
 
-        public void RegisterUser(UserInfo userInfo)
+        public RegisterResponse RegisterUser(UserInfo userInfo)
         {
             context.UsersList.Add(userInfo);
             context.SaveChanges();
+            string customerId = context.UsersList.OrderByDescending(p => p.Id).FirstOrDefault().CustomerId;
+            CreateAccount(customerId);
+            return new RegisterResponse { CustomerId=customerId};
         }
 
-        public void UnregisterUser(string userId)
+        private void CreateAccount(string customerId)
         {
-            context.UsersList.Remove(GetUser(userId));
+            context.AccountList.Add(new Account { CustomerId = customerId, Balance = OPENING_BALANCE });
+            context.SaveChanges();
+        }
+
+        public void UnregisterUser(string customerId)
+        {
+            context.UsersList.Remove(GetUser(customerId));
+            context.SaveChanges();
+            DeleteAccount(customerId);
+        }
+        private Account GetAccount(string customerId) {
+            return context.AccountList.SingleOrDefault(a => a.CustomerId == customerId);
+        }
+        private void DeleteAccount(string customerId)
+        {
+            context.AccountList.Remove(GetAccount(customerId));
             context.SaveChanges();
         }
 

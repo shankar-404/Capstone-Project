@@ -1,115 +1,98 @@
 using Bank_Management_System.Database;
 using Bank_Management_System.Entities;
-using Bank_Management_System.Constants;
 using Bank_Management_System.Interfaces;
-using System.Reflection.Metadata.Ecma335;
+using Microsoft.EntityFrameworkCore;
 
 namespace Bank_Management_System.Services
 {
     public class TransactionService : ITransactionService
     {
         private UserInfoDbContext context;
+        const string WITHDRAW = "WITHDRAW";
+        const string DEPOSIT = "DEPOSIT";
 
-        public TransactionService ()
+        public TransactionService()
         {
             context = new UserInfoDbContext();
         }
 
-        private Account getAccountFromUserId(int id)
+        public void AddTransaction(Transaction transaction)
         {
-            var account = context.AccounList.Where(a => a.UserInfoId == id).FirstOrDefault();
-            if (account == null)
-            {
-                account = new Account { Balance = 0, UserInfoId = id };
-                context.AccounList.Add(account);
-                context.SaveChanges();
-            }
-
-            return account;
+            context.TransactionList.Add(transaction);
+            context.SaveChanges();
         }
 
-        public bool validateTransaction(TransactionRequest t)
+        public List<Transaction> GetAllTransactionFilter(FilterRequest request)
         {
-            var account = getAccountFromUserId(t.UserId);
+            string custumorId = request.CustomerId;
+            DateTime start = request.start;
+            DateTime end = request.end;
+            return GetAllTransaction(custumorId).Where(t => t.Time>=start && t.Time<=end).ToList();
+        }
 
-            if (t.Type == Constants.Constants.WITHDRAW)
+        public List<Transaction> GetAllTransaction(string customerId) {
+            return context.TransactionList.Where(t=>t.CustomerId==customerId).ToList();
+        }
+        public TransactionResponse Balance(string customerId)
+        {
+            double CurrentBalance = (double)context.AccountList.SingleOrDefault(user => user.CustomerId == customerId).Balance;
+            return new TransactionResponse {CustomerId=customerId, Status=true, Message=null, Balance=CurrentBalance };
+        }
+
+        public TransactionResponse Deposit(TransactionRequest transactionRequest)
+        {
+            string customerId = transactionRequest.CustomerId;
+            double amount = (double)transactionRequest.Amount;
+            double Currentbalance = (double)Balance(customerId).Balance;
+            double NewBalance = Currentbalance + amount;
+            UpdateBalance(customerId, NewBalance);
+
+            AddTransaction(new Transaction { CustomerId = customerId, Amount = amount, Type = DEPOSIT });
+
+            double balance = (double)Balance(customerId).Balance;
+            return new TransactionResponse { CustomerId = customerId, Status = true, Message = $"Amount Rs {amount} Deposited !", Balance = NewBalance };
+        }
+
+        private void UpdateBalance(string customerId, double NewBalance)
+        {
+            var entry = context.AccountList.SingleOrDefault(user => user.CustomerId == customerId);
+            entry.Balance = NewBalance;
+            context.AccountList.Add(entry);
+            context.Entry(entry).State = EntityState.Modified;
+            context.SaveChanges();
+        }
+
+        public TransactionResponse Withdraw(TransactionRequest transactionRequest)
+        {
+            string customerId = transactionRequest.CustomerId;
+            double amount = (double)transactionRequest.Amount;
+            double CurrentBalance = (double)context.AccountList.SingleOrDefault(user => user.CustomerId == customerId).Balance;
+            bool status = ValidateWidthraw(amount, CurrentBalance);
+            string message;
+            double NewBalance = CurrentBalance;
+            if (status)
             {
-                if (t.Amount > account.Balance)
-                {
-                    return false;
-                }
+                NewBalance = CurrentBalance - amount;
+                UpdateBalance(customerId, NewBalance);
+
+                AddTransaction(new Transaction { CustomerId = customerId, Amount = amount, Type = WITHDRAW });
+                message = $"Rs {amount} withrawn";
+
             }
-                
+            else {
+                message = "Insufficient Balance";
+            }
+
+            return new TransactionResponse { CustomerId = customerId, Status = status, Message = message, Balance = NewBalance };
+        }
+
+        private bool ValidateWidthraw(double amount, double balance)
+        {
+            if (balance==0)
+                return false;
+            if (balance < amount)
+                return false;
             return true;
-        }
-
-        public TransactionResponse Withdraw(TransactionRequest t)
-        {
-            var account = getAccountFromUserId(t.UserId);
-
-            if (validateTransaction(t))
-            {
-                account.Balance -= t.Amount ?? 0.0;
-                context.AccounList.Update(account);
-                context.SaveChanges();
-
-                return new TransactionResponse
-                {
-                    AccountId = account.Id,
-                    UserId = account.UserInfoId,
-                    Status = true,
-                    Balance = account.Balance
-                };
-            }
-
-            return new TransactionResponse
-            {
-                AccountId = account.Id,
-                UserId = account.UserInfoId,
-                Status = false,
-                Balance = account.Balance
-            };
-        }
-
-        public TransactionResponse Deposit(TransactionRequest t)
-        {
-            var account = getAccountFromUserId(t.UserId);
-
-            if (validateTransaction(t))
-            {
-                account.Balance += t.Amount ?? 0.0;
-                context.AccounList.Update(account);
-                context.SaveChanges();
-
-                return new TransactionResponse
-                {
-                    AccountId = account.Id,
-                    UserId = account.UserInfoId,
-                    Status = true,
-                    Balance = account.Balance
-                };
-            }
-
-            return new TransactionResponse
-            {
-                AccountId = account.Id,
-                UserId = account.UserInfoId,
-                Status = false,
-                Balance = account.Balance
-            };
-        }
-
-        public TransactionResponse Balance(int id)
-        {
-            var account = getAccountFromUserId(id);
-
-            return new TransactionResponse
-            {
-                AccountId = account.Id,
-                UserId = account.UserInfoId,
-                Status = true,
-                Balance = account.Balance
-            };
         }
     }
 }
