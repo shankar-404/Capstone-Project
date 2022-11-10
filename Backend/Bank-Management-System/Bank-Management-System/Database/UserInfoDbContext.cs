@@ -14,8 +14,12 @@ namespace Bank_Management_System.Database
         private const string ConnectionString = @"server=DESKTOP-TSPSRDD;database=BankDb;Trusted_Connection=true;trustServerCertificate=true;";
 
         public DbSet<UserInfo> UsersList { get; set; }
+        public DbSet<Account> AccounList { get; set; }
+        public DbSet<Transaction> TransactionList { get; set; }
+
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder) {
             optionsBuilder.UseSqlServer(ConnectionString);
+            //optionsBuilder.UseInMemoryDatabase(databaseName: "BankDb");
         }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
