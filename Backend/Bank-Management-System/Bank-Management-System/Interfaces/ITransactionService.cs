@@ -4,8 +4,8 @@ namespace Bank_Management_System.Interfaces
 {
     public interface ITransactionService
     {
-        TransactionResponse Withdraw(TransactionRequest t);
-        TransactionResponse Deposit(TransactionRequest t);
+        TransactionResponse Withdraw(TransactionRequest transactionRequest);
+        TransactionResponse Deposit(TransactionRequest transactionRequest);
         TransactionResponse Balance(string customerId);
     }
 }

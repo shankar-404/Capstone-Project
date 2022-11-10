@@ -4,6 +4,7 @@ using Bank_Management_System.Database;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BankManagementSystem.Migrations
 {
     [DbContext(typeof(UserInfoDbContext))]
-    partial class UserInfoDbContextModelSnapshot : ModelSnapshot
+    [Migration("20221110141120_db-3")]
+    partial class db3
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -33,13 +36,14 @@ namespace BankManagementSystem.Migrations
                     b.Property<double>("Balance")
                         .HasColumnType("float");
 
-                    b.Property<string>("CustomerId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("UserInfoId")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
-                    b.ToTable("AccountList");
+                    b.HasIndex("UserInfoId");
+
+                    b.ToTable("AccounList");
                 });
 
             modelBuilder.Entity("Bank_Management_System.Entities.Transaction", b =>
@@ -78,6 +82,10 @@ namespace BankManagementSystem.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<double>("Balance")
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("float");
 
                     b.Property<string>("City")
                         .HasColumnType("nvarchar(max)");
@@ -120,6 +128,17 @@ namespace BankManagementSystem.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("UserInformation");
+                });
+
+            modelBuilder.Entity("Bank_Management_System.Entities.Account", b =>
+                {
+                    b.HasOne("Bank_Management_System.Entities.UserInfo", "UserInfo")
+                        .WithMany()
+                        .HasForeignKey("UserInfoId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("UserInfo");
                 });
 #pragma warning restore 612, 618
         }

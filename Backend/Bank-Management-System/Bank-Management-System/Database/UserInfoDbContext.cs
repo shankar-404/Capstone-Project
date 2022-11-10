@@ -14,7 +14,7 @@ namespace Bank_Management_System.Database
         //private const string ConnectionString = @"server=DESKTOP-TSPSRDD;database=BankDb;Trusted_Connection=true;trustServerCertificate=true;";
 
         public DbSet<UserInfo> UsersList { get; set; }
-        public DbSet<Account> AccounList { get; set; }
+        public DbSet<Account> AccountList { get; set; }
         public DbSet<Transaction> TransactionList { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder) {
@@ -39,9 +39,13 @@ namespace Bank_Management_System.Database
                 .Property(e => e.Token)
                 .HasDefaultValueSql("(newid())");
 
-            modelBuilder.Entity<UserInfo>()
-                .Property(e => e.Balance)
-                .HasDefaultValueSql("0.0");
+            //modelBuilder.Entity<UserInfo>()
+            //    .Property(e => e.Balance)
+            //    .HasDefaultValueSql("0.0");
+
+            modelBuilder.Entity<Transaction>()
+                .Property(e => e.Time)
+                .HasDefaultValueSql("getdate()");
 
         }
     }

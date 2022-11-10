@@ -13,6 +13,8 @@ namespace Bank_Management_System.Entities
 		public string CustomerId { get; set; }
 		public double Amount { get; set; }
 		public string Type { get; set; }
+        [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
+        public DateTime Time { get; set; }
 	}
 }
 

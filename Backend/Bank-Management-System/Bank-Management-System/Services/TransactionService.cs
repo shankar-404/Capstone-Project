@@ -1,115 +1,98 @@
-//using bank_management_system.database;
-//using bank_management_system.entities;
-//using bank_management_system.constants;
-//using bank_management_system.interfaces;
-//using system.reflection.metadata.ecma335;
+using Bank_Management_System.Database;
+using Bank_Management_System.Entities;
+using Bank_Management_System.Interfaces;
+using Microsoft.EntityFrameworkCore;
 
-//namespace bank_management_system.services
-//{
-//    public class transactionservice : itransactionservice
-//    {
-//        private userinfodbcontext context;
+namespace Bank_Management_System.Services
+{
+    public class TransactionService : ITransactionService
+    {
+        private UserInfoDbContext context;
+        const string WITHDRAW = "WITHDRAW";
+        const string DEPOSIT = "DEPOSIT";
 
-//        public transactionservice()
-//        {
-//            context = new userinfodbcontext();
-//        }
+        public TransactionService()
+        {
+            context = new UserInfoDbContext();
+        }
 
-//        private account getaccountfromuserid(int id)
-//        {
-//            var account = context.accounlist.where(a => a.userinfoid == id).firstordefault();
-//            if (account == null)
-//            {
-//                account = new account { balance = 0, userinfoid = id };
-//                context.accounlist.add(account);
-//                context.savechanges();
-//            }
+        public void AddTransaction(Transaction transaction)
+        {
+            context.TransactionList.Add(transaction);
+            context.SaveChanges();
+        }
 
-//            return account;
-//        }
+        public List<Transaction> GetAllTransactionFilter(FilterRequest request)
+        {
+            string custumorId = request.CustomerId;
+            DateTime start = request.start;
+            DateTime end = request.end;
+            return GetAllTransaction(custumorId).Where(t => t.Time>=start && t.Time<=end).ToList();
+        }
 
-//        public bool validatetransaction(transactionrequest t)
-//        {
-//            var account = getaccountfromuserid(t.userid);
+        public List<Transaction> GetAllTransaction(string customerId) {
+            return context.TransactionList.Where(t=>t.CustomerId==customerId).ToList();
+        }
+        public TransactionResponse Balance(string customerId)
+        {
+            double CurrentBalance = (double)context.AccountList.SingleOrDefault(user => user.CustomerId == customerId).Balance;
+            return new TransactionResponse {CustomerId=customerId, Status=true, Message=null, Balance=CurrentBalance };
+        }
 
-//            if (t.type == constants.constants.withdraw)
-//            {
-//                if (t.amount > account.balance)
-//                {
-//                    return false;
-//                }
-//            }
+        public TransactionResponse Deposit(TransactionRequest transactionRequest)
+        {
+            string customerId = transactionRequest.CustomerId;
+            double amount = (double)transactionRequest.Amount;
+            double Currentbalance = (double)Balance(customerId).Balance;
+            double NewBalance = Currentbalance + amount;
+            UpdateBalance(customerId, NewBalance);
 
-//            return true;
-//        }
+            AddTransaction(new Transaction { CustomerId = customerId, Amount = amount, Type = DEPOSIT });
 
-//        public transactionresponse withdraw(transactionrequest t)
-//        {
-//            var account = getaccountfromuserid(t.userid);
+            double balance = (double)Balance(customerId).Balance;
+            return new TransactionResponse { CustomerId = customerId, Status = true, Message = $"Amount Rs {amount} Deposited !", Balance = NewBalance };
+        }
 
-//            if (validatetransaction(t))
-//            {
-//                account.balance -= t.amount ?? 0.0;
-//                context.accounlist.update(account);
-//                context.savechanges();
+        private void UpdateBalance(string customerId, double NewBalance)
+        {
+            var entry = context.AccountList.SingleOrDefault(user => user.CustomerId == customerId);
+            entry.Balance = NewBalance;
+            context.AccountList.Add(entry);
+            context.Entry(entry).State = EntityState.Modified;
+            context.SaveChanges();
+        }
 
-//                return new transactionresponse
-//                {
-//                    accountid = account.id,
-//                    userid = account.userinfoid,
-//                    status = true,
-//                    balance = account.balance
-//                };
-//            }
+        public TransactionResponse Withdraw(TransactionRequest transactionRequest)
+        {
+            string customerId = transactionRequest.CustomerId;
+            double amount = (double)transactionRequest.Amount;
+            double CurrentBalance = (double)context.AccountList.SingleOrDefault(user => user.CustomerId == customerId).Balance;
+            bool status = ValidateWidthraw(amount, CurrentBalance);
+            string message;
+            double NewBalance = CurrentBalance;
+            if (status)
+            {
+                NewBalance = CurrentBalance - amount;
+                UpdateBalance(customerId, NewBalance);
 
-//            return new transactionresponse
-//            {
-//                accountid = account.id,
-//                userid = account.userinfoid,
-//                status = false,
-//                balance = account.balance
-//            };
-//        }
+                AddTransaction(new Transaction { CustomerId = customerId, Amount = amount, Type = WITHDRAW });
+                message = $"Rs {amount} withrawn";
 
-//        public transactionresponse deposit(transactionrequest t)
-//        {
-//            var account = getaccountfromuserid(t.userid);
+            }
+            else {
+                message = "Insufficient Balance";
+            }
 
-//            if (validatetransaction(t))
-//            {
-//                account.balance += t.amount ?? 0.0;
-//                context.accounlist.update(account);
-//                context.savechanges();
+            return new TransactionResponse { CustomerId = customerId, Status = status, Message = message, Balance = NewBalance };
+        }
 
-//                return new transactionresponse
-//                {
-//                    accountid = account.id,
-//                    userid = account.userinfoid,
-//                    status = true,
-//                    balance = account.balance
-//                };
-//            }
-
-//            return new transactionresponse
-//            {
-//                accountid = account.id,
-//                userid = account.userinfoid,
-//                status = false,
-//                balance = account.balance
-//            };
-//        }
-
-//        public transactionresponse balance(int id)
-//        {
-//            var account = getaccountfromuserid(id);
-
-//            return new transactionresponse
-//            {
-//                accountid = account.id,
-//                userid = account.userinfoid,
-//                status = true,
-//                balance = account.balance
-//            };
-//        }
-//    }
-//}
+        private bool ValidateWidthraw(double amount, double balance)
+        {
+            if (balance==0)
+                return false;
+            if (balance < amount)
+                return false;
+            return true;
+        }
+    }
+}
