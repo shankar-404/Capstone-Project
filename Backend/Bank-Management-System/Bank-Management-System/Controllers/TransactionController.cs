@@ -74,13 +74,13 @@ namespace Bank_Management_System.Controllers
             }
         }
 
-        [Route("transactionsFilter/{customerId}/{start}/{end}")]
+        [Route("transactionsFilter/{customerId}/{start}/{end}/{type}")]
         [HttpGet]
-        public IActionResult TransactionsFilter([FromRoute] string customerId, DateTime start, DateTime end)
+        public IActionResult TransactionsFilter([FromRoute] string customerId, DateTime start, DateTime end, string type)
         {
             try
             {
-                FilterRequest request = new FilterRequest { CustomerId = customerId, start = start, end = end };
+                FilterRequest request = new FilterRequest { CustomerId = customerId, start = start, end = end, type=type };
                 List<Transaction> transactions = _transactionService.GetAllTransactionFilter(request);
                 return StatusCode(200, transactions);
             }
