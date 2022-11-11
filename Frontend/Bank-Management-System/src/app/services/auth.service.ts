@@ -11,7 +11,7 @@ export class AuthService {
 
   register(registerObj:any) {
     console.log("Req:", registerObj)
-    return this.http.post(`${this.baseUrl}/RegisterService/Register`, registerObj, { responseType: 'text' })
+    return this.http.post<any>(`${this.baseUrl}/RegisterService/Register`, registerObj)
   }
 
   login(loginObj:any) {
