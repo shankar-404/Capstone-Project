@@ -44,15 +44,12 @@ export class RegisterComponent implements OnInit {
   onSubmit(){
     if(this.registerForm.valid){
       //API Request
-      // console.log(this.registerForm.value['dob'])
       let date_str = this.registerForm.value['dob'].year + '-' + this.registerForm.value['dob'].month + '-' + this.registerForm.value['dob'].day
       this.registerForm.value['dob'] = date_str;
-      // console.log(this.registerForm.value )
       this.auth.register(this.registerForm.value)
       .subscribe({
         next:(res)=>{
           this.toastr.success("Customer ID: " + res.customerId,"Success");
-          // console.log(res);
           this.registerForm.reset();
           this.router.navigate(['login']);
         },
