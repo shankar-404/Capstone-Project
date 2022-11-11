@@ -25,7 +25,8 @@ namespace Bank_Management_System.Services
             string custumorId = request.CustomerId;
             DateTime start = request.start;
             DateTime end = request.end;
-            return GetAllTransaction(custumorId).Where(t => t.Time>=start && t.Time<=end).ToList();
+            string type = request.type;
+            return GetAllTransaction(custumorId).Where(t => t.Time>=start && t.Time<=end && t.Type==type).ToList();
         }
 
         public List<Transaction> GetAllTransaction(string customerId) {
