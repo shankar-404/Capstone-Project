@@ -8,8 +8,6 @@ namespace Bank_Management_System.Services
     public class TransactionService : ITransactionService
     {
         private UserInfoDbContext context;
-        const string WITHDRAW = "WITHDRAW";
-        const string DEPOSIT = "DEPOSIT";
 
         public TransactionService()
         {
@@ -47,7 +45,7 @@ namespace Bank_Management_System.Services
             double NewBalance = Currentbalance + amount;
             UpdateBalance(customerId, NewBalance);
 
-            AddTransaction(new Transaction { CustomerId = customerId, Amount = amount, Type = DEPOSIT });
+            AddTransaction(new Transaction { CustomerId = customerId, Amount = amount, Type = Constants.Constants.DEPOSIT });
 
             double balance = (double)Balance(customerId).Balance;
             return new TransactionResponse { CustomerId = customerId, Status = true, Message = $"Amount Rs {amount} Deposited !", Balance = NewBalance };
@@ -75,7 +73,7 @@ namespace Bank_Management_System.Services
                 NewBalance = CurrentBalance - amount;
                 UpdateBalance(customerId, NewBalance);
 
-                AddTransaction(new Transaction { CustomerId = customerId, Amount = amount, Type = WITHDRAW });
+                AddTransaction(new Transaction { CustomerId = customerId, Amount = amount, Type = Constants.Constants.WITHDRAW });
                 message = $"Rs {amount} withrawn";
 
             }

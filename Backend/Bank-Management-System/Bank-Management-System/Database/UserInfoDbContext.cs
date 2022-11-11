@@ -16,6 +16,7 @@ namespace Bank_Management_System.Database
         public DbSet<UserInfo> UsersList { get; set; }
         public DbSet<Account> AccountList { get; set; }
         public DbSet<Transaction> TransactionList { get; set; }
+        public DbSet<LoanInfo> LoanList { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder) {
             optionsBuilder.UseSqlServer(ConnectionString);
