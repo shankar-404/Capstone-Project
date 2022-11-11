@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ToastrService } from 'ngx-toastr';
 import ValidateForm from 'src/app/helpers/validateForm';
+import { TransactionsService } from 'src/app/services/transactions.service';
 import { TransactionsModalComponent } from './transactions-modal/transactions-modal.component';
 
 @Component({
@@ -17,11 +18,12 @@ export class TransactionsComponent implements OnInit {
   transactionTypeValue!: string;
   customerId!:string;
 
-  constructor(private fb: FormBuilder, private toastr: ToastrService, private router: Router, private modalService: NgbModal) { }
+  constructor(private fb: FormBuilder, private toastr: ToastrService, private router: Router, private transactionsService: TransactionsService, private modalService: NgbModal) { }
 
   ngOnInit(): void {
     this.customerId = localStorage.getItem('customerId') || ""
     this.transactionForm = this.fb.group({
+      customerId: [this.customerId],
       transactionType: ['',Validators.required],
       amount: ['',Validators.required]
     })
@@ -29,8 +31,43 @@ export class TransactionsComponent implements OnInit {
 
   onSubmit(){
     if(this.transactionForm.valid){
+      if(this.transactionForm.value['transactionType'] == 'Withdraw') {
       //API Request
-      console.log(this.transactionForm.value)
+      this.transactionsService.withdraw(this.transactionForm.value)
+      .subscribe({
+        next:(res)=>{
+          // console.log(res)
+          if(res.status == true) {
+            this.toastr.success("Transaction Complete: Balance = " + res.balance,"Success");
+          }
+          else{
+            this.toastr.error(res.message,"Error");
+          } 
+        },
+        error:(err)=>{
+          this.toastr.error("Connection to backend failed","Error");
+        }
+      })
+    }
+    else if(this.transactionForm.value['transactionType'] == 'Deposit') {
+      //API Request
+      this.transactionsService.deposit(this.transactionForm.value)
+      .subscribe({
+        next:(res)=>{
+          // console.log(res)
+          if(res.status == true) {
+            this.toastr.success("Transaction Complete: Balance = " + res.balance,"Success");
+          }
+          else{
+            this.toastr.error(res.message,"Error");
+          } 
+        },
+        error:(err)=>{
+          // console.log(this.transactionForm.value)
+          this.toastr.success("Connection to backend failed","Error");
+        }
+      })
+    }
     }
     else{
       console.log(this.transactionForm.value)

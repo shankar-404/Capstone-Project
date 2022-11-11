@@ -51,7 +51,7 @@ export class RegisterComponent implements OnInit {
       this.auth.register(this.registerForm.value)
       .subscribe({
         next:(res)=>{
-          this.toastr.success(res,"Success");
+          this.toastr.success("Customer ID: " + res.customerId,"Success");
           // console.log(res);
           this.registerForm.reset();
           this.router.navigate(['login']);
