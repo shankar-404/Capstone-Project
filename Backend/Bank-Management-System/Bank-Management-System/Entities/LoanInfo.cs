@@ -12,6 +12,7 @@ namespace Bank_Management_System.Entities
         public string CustomerId { get; set; }
         [Required]
         public double Amount { get; set; }
+        public string? BankBranch { get; set; }
         public string? LoanType {get; set; } // eg ['car loan', 'bike loan', house loan', etc]
     }
 }

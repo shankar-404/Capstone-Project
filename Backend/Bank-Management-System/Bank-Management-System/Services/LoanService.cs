@@ -32,7 +32,7 @@ namespace Bank_Management_System.Services
 
         private void AddNewLoan(LoanRequest request)
         {
-            context.LoanList.Add(new LoanInfo { CustomerId = request.CustomerId, Amount = request.Amount, LoanType = request.LoanType });
+            context.LoanList.Add(new LoanInfo { CustomerId = request.CustomerId, Amount = request.Amount, BankBranch=request.BankBranch, LoanType = request.LoanType });
             context.SaveChanges();
         }
 
