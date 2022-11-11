@@ -20,11 +20,20 @@ export class TransactionsService {
   }
 
   view(viewObj:any){
+
     console.log(viewObj.startDate)
     let start = viewObj.startDate.day + '-' + viewObj.startDate.month + '-' + viewObj.startDate.year
     let end = viewObj.endDate.day + '-' + viewObj.endDate.month + '-' + viewObj.endDate.year
-    console.log(`${this.baseUrl}/Transaction/transactionsFilter/${viewObj.customerId}/${start}/${end}`)
-    return this.http.get<any>(`${this.baseUrl}/Transaction/transactionsFilter/${viewObj.customerId}/${start}/${end}`)
+    
+    if(viewObj.transactionType == "Withdraw"){
+      return this.http.get<any>(`${this.baseUrl}/Transaction/transactionsFilter/${viewObj.customerId}/${start}/${end}/WITHDRAW`)
+    }
+    else{
+      return this.http.get<any>(`${this.baseUrl}/Transaction/transactionsFilter/${viewObj.customerId}/${start}/${end}/DEPOSIT`)
+
+    }
+    // console.log(`${this.baseUrl}/Transaction/transactionsFilter/${viewObj.customerId}/${start}/${end}`)
+    // return this.http.get<any>(`${this.baseUrl}/Transaction/transactionsFilter/${viewObj.customerId}/${start}/${end}`)
   }
 
 }
